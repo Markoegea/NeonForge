@@ -5,7 +5,6 @@ public class Frame {
     public float frameTime;
 
     public Frame() {
-
     }
 
     public Frame(Sprite sprite, float time){

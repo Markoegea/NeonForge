@@ -128,11 +128,11 @@ public class MouseListener {
      * in the glviewport, and this is very sensitive with the coordinates
      * */
     public static Vector2f getScreen() {
-        float mousePosX = get().gameViewportDistance.x + (get().gameViewportPos.x / 2f);
+        float mousePosX = (get().gameViewportDistance.x + (get().gameViewportPos.x / 2f)) - Window.getPosX();
         float currentX = (getX() - mousePosX);
         currentX = (currentX / get().gameViewportSize.x) * Window.getFinalWidth();
 
-        float mousePosY = get().gameViewportDistance.y + (get().gameViewportPos.y / 2f);
+        float mousePosY = (get().gameViewportDistance.y + (get().gameViewportPos.y / 2f)) - Window.getPosY();
         float currentY = (getY() - mousePosY);
         currentY = Window.getFinalHeight() - ((currentY / get().gameViewportSize.y) * Window.getFinalHeight());
 
@@ -161,11 +161,11 @@ public class MouseListener {
 
     public static Vector2f getWorld() {
 
-        float mousePosX = get().gameViewportDistance.x + (get().gameViewportPos.x / 2f);
+        float mousePosX = (get().gameViewportDistance.x + (get().gameViewportPos.x / 2f)) - Window.getPosX();
         float currentX = (getX() - mousePosX);
         currentX = (2.0f * (currentX / get().gameViewportSize.x)) - 1.0f;
 
-        float mousePosY = get().gameViewportDistance.y + (get().gameViewportPos.y / 2f);
+        float mousePosY = (get().gameViewportDistance.y + (get().gameViewportPos.y / 2f)) - Window.getPosY();
         float currentY = (getY() - mousePosY);
         currentY = (2.0f * (1.0f - (currentY / get().gameViewportSize.y))) - 1.0f;
 
@@ -215,5 +215,6 @@ public class MouseListener {
 
     public static void setGameViewportDistance(Vector2f gameViewportDistance) {
         get().gameViewportDistance.set(gameViewportDistance);
+        System.out.println(gameViewportDistance.x +" "+ gameViewportDistance.y);
     }
 }

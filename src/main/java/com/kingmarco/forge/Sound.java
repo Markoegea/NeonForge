@@ -1,23 +1,37 @@
 package com.kingmarco.forge;
 
+import com.kingmarco.observers.EventSystem;
+import com.kingmarco.observers.Observer;
+import com.kingmarco.observers.events.Event;
+import com.kingmarco.observers.events.EventType;
+import com.kingmarco.scenes.LevelEditorSceneInitializer;
+import com.kingmarco.scenes.LevelGameSceneInitializer;
+
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
+import java.util.Objects;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_filename;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.libc.LibCStdlib.free;
 
-public class Sound {
+public class Sound implements Observer {
     private int bufferId;
     private int sourceId;
     private String filepath;
+    private boolean loops;
 
     private boolean isPlaying = false;
 
     public Sound(String filepath, boolean loops){
         this.filepath = filepath;
+        this.loops = loops;
+        EventSystem.addObserver(this);
+        init();
+    }
 
+    private void init(){
         //Allocate space to store the return information from stb
         stackPush();
         IntBuffer channelsBuffer = stackMallocInt(1);
@@ -64,6 +78,12 @@ public class Sound {
         free(rawAudioBuffer);
     }
 
+    public void changeSource(){
+        stop();
+        delete();
+        init();
+    }
+
     public void delete() {
         alDeleteSources(sourceId);
         alDeleteBuffers(bufferId);
@@ -99,5 +119,12 @@ public class Sound {
             isPlaying = false;
         }
         return isPlaying;
+    }
+
+    @Override
+    public void onNotify(GameObject object, Event event) {
+        if (event.type == EventType.AudioDeviceChanged) {
+            changeSource();
+        }
     }
 }

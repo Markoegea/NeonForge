@@ -14,11 +14,10 @@ import com.kingmarco.util.AssetPool;
 import org.joml.Vector4f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.openal.AL;
-import org.lwjgl.openal.ALC;
-import org.lwjgl.openal.ALCCapabilities;
-import org.lwjgl.openal.ALCapabilities;
+import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
+import org.lwjgl.openal.*;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.windows.WinBase;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -27,35 +26,35 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window implements Observer {
-    private int[] width, height;
-    private int finalWidth, finalHeight;
+    private static Scene currentScene;
+    private static Window window = null;
     private final String title;
+    private int[] width, height;
+    private final int finalWidth, finalHeight;
+    private float posX, posY;
     private long glfwWindow;
     private ImGuiLayer imGuiLayer;
     private Framebuffer framebuffer;
     private PickingTexture pickingTexture;
     public float r, g, b, a;
-
-    private static Window window = null;
     private long audioContext;
     private long audioDevice;
-    private static Scene currentScene;
     private boolean runtimePlaying = false;
+    private String nameAudioDevice = "";
 
     private Window(){
         this.width = new int[]{1920};
         this.height = new int[]{1080};
         this.finalWidth = 1920;
         this.finalHeight = 1080;
+        this.posX = 0f;
+        this.posY = 0f;
         this.title = "NeonForge";
         EventSystem.addObserver(this);
-        /*r = 0.36f;
+        r = 0.36f;
         g = 0.24f;
-        b = 0.26f;*/
+        b = 0.26f;
         a = 1;
-        r = 0f;
-        g = 0f;
-        b = 0f;
     }
 
     public static void changeScene(SceneInitializer sceneInitializer){
@@ -120,7 +119,7 @@ public class Window implements Observer {
         // Create the window
         glfwWindow = glfwCreateWindow(this.width[0], this.height[0], this.title, NULL, NULL);
         glfwGetWindowSize(glfwWindow, this.width, this.height);
-        //glfwSetWindowMonitor(glfwWindow, NULL,0,0, this.width, this.height, GLFW_DONT_CARE);
+        //glfwSetWindowMonitor(glfwWindow, NULL,0,0, this.width[0], this.height[0], GLFW_DONT_CARE);
 
         if (glfwWindow == NULL) {
             throw new IllegalStateException("Failed to create the GLFW window");
@@ -135,6 +134,10 @@ public class Window implements Observer {
             Window.setWidth(newWidth);
             Window.setHeight(newHeight);
         });
+        glfwSetWindowPosCallback(glfwWindow, (p, newPosX, newPosY) -> {
+            Window.setPosX(newPosX);
+            Window.setPosY(newPosY);
+        });
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
@@ -145,19 +148,7 @@ public class Window implements Observer {
         glfwShowWindow(glfwWindow);
 
         // Initialize the audio device
-        String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
-        audioDevice = alcOpenDevice(defaultDeviceName);
-
-        int[] attributes = {0};
-        audioContext = alcCreateContext(audioDevice, attributes);
-        alcMakeContextCurrent(audioContext);
-
-        ALCCapabilities alcCapabilities = ALC.createCapabilities(audioDevice);
-        ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
-
-        if (!alCapabilities.OpenAL10) {
-            assert false : "Audio library not supported.";
-        }
+        changeAudioDevice();
 
         // This line is critical for LWJGL's interoperation with GLFW's
         // OpenGL context, or any context that is managed externally.
@@ -180,6 +171,26 @@ public class Window implements Observer {
         Window.changeScene(new LevelEditorSceneInitializer());
     }
 
+    private void changeAudioDevice(){
+        // Initialize the audio device
+        String defaultDeviceName = alcGetString(0, ALC11.ALC_ALL_DEVICES_SPECIFIER);
+        if (nameAudioDevice.equals(defaultDeviceName)) return;
+        nameAudioDevice = defaultDeviceName;
+
+        audioDevice = alcOpenDevice(defaultDeviceName);
+
+        int[] attributes = {0};
+        audioContext = alcCreateContext(audioDevice, attributes);
+        alcMakeContextCurrent(audioContext);
+
+        ALCCapabilities alcCapabilities = ALC.createCapabilities(audioDevice);
+        ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
+
+        assert alCapabilities.OpenAL10 : "Audio library not supported.";
+
+        EventSystem.notify(null, new Event(EventType.AudioDeviceChanged));
+    }
+
     public void loop() {
         float beginTime = (float) glfwGetTime();
         float endTime;
@@ -189,6 +200,9 @@ public class Window implements Observer {
 
         currentScene.start();
         while (!glfwWindowShouldClose(glfwWindow)){
+            //change Audio Device when change
+            changeAudioDevice();
+
             // Poll events
             glfwPollEvents();
 
@@ -261,6 +275,22 @@ public class Window implements Observer {
 
     public static int getFinalHeight() {
         return get().finalHeight;
+    }
+
+    public static float getPosX(){
+        return get().posX;
+    }
+
+    public static float getPosY(){
+        return get().posY;
+    }
+
+    public static void setPosX(float newPosX){
+        get().posX = newPosX;
+    }
+
+    public static void setPosY(float newPosY){
+        get().posY = newPosY;
     }
 
     public static Framebuffer getFramebuffer() {

@@ -6,4 +6,5 @@ public enum EventType {
     SaveLevel,
     LoadLevel,
     UserEvent,
+    AudioDeviceChanged
 }
