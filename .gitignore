@@ -42,6 +42,4 @@ bin/
 .DS_Store
 
 ### Personal Files ##
-src/main/java/com/kingmarco/GameFunctionality
-src/main/java/com/kingmarco/scenes/MyPrefabs.java
 src/main/saves
