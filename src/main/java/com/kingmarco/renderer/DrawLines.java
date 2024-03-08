@@ -1,13 +1,11 @@
 package com.kingmarco.renderer;
 
-import com.kingmarco.forge.Camera;
 import com.kingmarco.forge.Window;
 import com.kingmarco.util.AssetPool;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,6 +14,11 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+/**
+ * The DrawLines class implements the Comparable interface and handles the drawing of lines.
+ *
+ * This class provides methods to start drawing, begin a frame, and draw the lines.
+ */
 public class DrawLines implements Comparable<DrawLines>{
     private int MAX_LINES = 5000;
     private List<Line2D> lines = new ArrayList<>();
@@ -34,6 +37,13 @@ public class DrawLines implements Comparable<DrawLines>{
         this.zIndex = zIndex;
     }
 
+
+    /**
+     * Starts the drawing process.
+     *
+     * This method generates the Vertex Array Object (VAO), binds it, creates the Vertex Buffer Object (VBO), buffers some memory,
+     * enables the vertex array attributes, and sets the line width.
+     */
     public void start() {
         //Generate the vao
         vaoID = glGenVertexArrays();
@@ -54,6 +64,12 @@ public class DrawLines implements Comparable<DrawLines>{
         glLineWidth(2f);
     }
 
+    /**
+     * Begins a frame for drawing.
+     *
+     * This method checks if the drawing process has started, and if not, it starts the drawing process.
+     * It then removes any lines that have expired.
+     */
     public void beginFrame() {
         if (!started){
             start();
@@ -69,6 +85,14 @@ public class DrawLines implements Comparable<DrawLines>{
         }
     }
 
+    /**
+     * Draws the lines.
+     *
+     * This method checks if there are any lines to draw, and if so,
+     * it loads the position and color of each line into the vertex array,
+     * buffers the vertex array, uses the shader, uploads the projection and view matrices to the shader, binds the VAO,
+     * enables the vertex array attributes, draws the lines, disables the vertex array attributes, unbinds the VAO, and detaches the shader.
+     */
     public void draw() {
         if (lines.size() <= 0) return;
         int index = 0;
@@ -119,26 +143,64 @@ public class DrawLines implements Comparable<DrawLines>{
     // =========================================
     // Add line2D methods
     // =========================================
+
+    /**
+     * Adds a line to be drawn from one point to another with a default color and zIndex.
+     *
+     * @param from The starting point of the line.
+     * @param to The ending point of the line.
+     */
     public void addLine2D(Vector2f from, Vector2f to) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addLine2D(from, to, new Vector3f(0, 1, 0), 1, 0);
     }
 
+    /**
+     * Adds a line to be drawn from one point to another with a specified color and a default zIndex.
+     *
+     * @param from The starting point of the line.
+     * @param to The ending point of the line.
+     * @param color The color of the line.
+     */
     public void addLine2D(Vector2f from, Vector2f to, Vector3f color) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addLine2D(from, to, color, 1, 0);
     }
 
+    /**
+     * Adds a line to be drawn from one point to another with a specified zIndex and a default color.
+     *
+     * @param from The starting point of the line.
+     * @param to The ending point of the line.
+     * @param zIndex The zIndex of the line.
+     */
     public void addLine2D(Vector2f from, Vector2f to, int zIndex) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addLine2D(from, to, new Vector3f(0, 1, 0), 1, zIndex);
     }
 
+    /**
+     * Adds a line to be drawn from one point to another with a specified color and zIndex.
+     *
+     * @param from The starting point of the line.
+     * @param to The ending point of the line.
+     * @param color The color of the line.
+     * @param zIndex The zIndex of the line.
+     */
     public void addLine2D(Vector2f from, Vector2f to, Vector3f color, int zIndex) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addLine2D(from, to, color, 1, zIndex);
     }
 
+    /**
+     * Adds a line to be drawn from one point to another with a specified color, lifetime, and zIndex.
+     *
+     * @param from The starting point of the line.
+     * @param to The ending point of the line.
+     * @param color The color of the line.
+     * @param lifeTime The lifetime of the line.
+     * @param zIndex The zIndex of the line.
+     */
     public void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifeTime, int zIndex){
         /*Camera camera = Window.getScene().camera();
         Vector2f cameraLeft = new Vector2f(camera.position).add(new Vector2f(-2.0f, -2.0f));
@@ -155,16 +217,41 @@ public class DrawLines implements Comparable<DrawLines>{
     // =========================================
     // Add Box2D methods
     // =========================================
+
+    /**
+     * Adds a box to be drawn at a specified center with specified dimensions and rotation, and a default color.
+     *
+     * @param center The center of the box.
+     * @param dimensions The dimensions of the box.
+     * @param rotation The rotation of the box.
+     */
     public void addBox2D(Vector2f center, Vector2f dimensions, float rotation) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addBox2D(center, dimensions, rotation, new Vector3f(0, 1, 0), 1);
     }
 
+    /**
+     * Adds a box to be drawn at a specified center with specified dimensions, rotation, and color.
+     *
+     * @param center The center of the box.
+     * @param dimensions The dimensions of the box.
+     * @param rotation The rotation of the box.
+     * @param color The color of the box.
+     */
     public void addBox2D(Vector2f center, Vector2f dimensions, float rotation, Vector3f color) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addBox2D(center, dimensions, rotation, color, 1);
     }
 
+    /**
+     * Adds a box to be drawn at a specified center with specified dimensions, rotation, color, and lifetime.
+     *
+     * @param center The center of the box.
+     * @param dimensions The dimensions of the box.
+     * @param rotation The rotation of the box.
+     * @param color The color of the box.
+     * @param lifeTime The lifetime of the box.
+     */
     public void addBox2D(Vector2f center, Vector2f dimensions, float rotation, Vector3f color, int lifeTime){
         Vector2f min = new Vector2f(center).sub(new Vector2f(dimensions).mul(0.5f));
         Vector2f max = new Vector2f(center).add(new Vector2f(dimensions).mul(0.5f));
@@ -189,16 +276,38 @@ public class DrawLines implements Comparable<DrawLines>{
     // =========================================
     // Add Circle methods
     // =========================================
+
+    /**
+     * Adds a circle to be drawn at a specified center with a specified radius and a default color.
+     *
+     * @param center The center of the circle.
+     * @param radius The radius of the circle.
+     */
     public void addCircle(Vector2f center, float radius) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addCircle(center, radius, new Vector3f(0, 1, 0), 1);
     }
 
+    /**
+     * Adds a circle to be drawn at a specified center with a specified radius and color.
+     *
+     * @param center The center of the circle.
+     * @param radius The radius of the circle.
+     * @param color The color of the circle.
+     */
     public void addCircle(Vector2f center, float radius, Vector3f color) {
         // TODO: ADD CONSTANTS FOR COMMON COLORS
         addCircle(center, radius, color, 1);
     }
 
+    /**
+     * Adds a circle to be drawn at a specified center with a specified radius, color, and lifetime.
+     *
+     * @param center The center of the circle.
+     * @param radius The radius of the circle.
+     * @param color The color of the circle.
+     * @param lifeTime The lifetime of the circle.
+     */
     public void addCircle(Vector2f center, float radius, Vector3f color, int lifeTime){
         Vector2f[] points = new Vector2f[50];
         int increment = 360 / points.length;
@@ -217,6 +326,12 @@ public class DrawLines implements Comparable<DrawLines>{
         addLine2D(points[points.length - 1], points[0], color, lifeTime, 1);
     }
 
+    /**
+     * Compares this DrawLines instance with another DrawLines instance based on their zIndex.
+     *
+     * @param o The other DrawLines instance.
+     * @return A negative integer, zero, or a positive integer as this DrawLines instance's zIndex is less than, equal to, or greater than the other DrawLines instance's zIndex.
+     */
     @Override
     public int compareTo(DrawLines o) {
         return Integer.compare(this.zIndex, o.zIndex);

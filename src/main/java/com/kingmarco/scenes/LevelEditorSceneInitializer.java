@@ -1,8 +1,9 @@
 package com.kingmarco.scenes;
 
-import com.kingmarco.GameFunctionality.BreakableBrick;
 import com.kingmarco.components.*;
-import com.kingmarco.forge.*;
+import com.kingmarco.forge.GameObject;
+import com.kingmarco.forge.Sound;
+import com.kingmarco.forge.Window;
 import com.kingmarco.physics2d.components.Box2DCollider;
 import com.kingmarco.physics2d.components.RigidBody2D;
 import com.kingmarco.physics2d.enums.BodyType;
@@ -15,6 +16,9 @@ import org.joml.Vector2f;
 import java.io.File;
 import java.util.Collection;
 
+/**
+ * This class initializes the level editor scene, load the resources and UI elements.
+ */
 public class LevelEditorSceneInitializer extends SceneInitializer {
 
     private SpritesSheet tileMap;
@@ -25,6 +29,13 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
 
     }
 
+    /**
+     * Initializes the given scene with the necessary components for the level editor.
+     * It loads the sprite sheet, creates the level editor game object,
+     * adds the necessary components to it, and adds it to the scene.
+     *
+     * @param scene The scene to initialize.
+     */
     @Override
     public void init(Scene scene) {
         tileMap = AssetPool.getSpriteSheet("assets/texture/NinjaAdventure/Actor/Characters/BlackNinjaMage/SpriteSheet.png");
@@ -39,6 +50,10 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
         scene.addGameObjectToScene(levelEditorStuff);
     }
 
+    /**
+     * This method is called when the scene starts.
+     * To get the important files, resources, sprites, and sounds.
+     */
     @Override
     public void loadResources(Scene scene) {
         AssetPool.getShader("assets/shaders/default.glsl");
@@ -94,6 +109,9 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
         }
     }
 
+    /**
+     * This method is called when the scene starts.
+     * */
     public void start() {
         /*if (gameObjects.isEmpty()){
             SpritesSheet spritesSheet = AssetPool.getSpriteSheet("assets/texture/NinjaAdventure/Actor/Boss/GiantRacoon/Idle.png");
@@ -120,6 +138,9 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
         //gameObjects.get(0).addComponent(new Rigidbody());
     }
 
+    /**
+     * Create and show ImGui elements and tabs.
+     * */
     @Override
     public void imgui() {
         //System.out.println("X: " + MouseListener.getScreenX() + " Y: "+MouseListener.getScreenY());

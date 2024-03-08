@@ -11,8 +11,17 @@ import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * Class responsible for the keyboard shortcuts that control the selected game objects.
+ * */
 public class KeyControls extends Component{
     // TODO: Refactor Code
+
+    /**
+     * Get the selected game objects and change their setting based in the keyboard listener
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     * */
     @Override
     public void editorUpdate(float dt) {
         PropertiesWindow propertiesWindow = Window.getImGuiLayer().getPropertiesWindow();

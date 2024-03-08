@@ -1,17 +1,19 @@
 package com.kingmarco.editor;
 
-import com.kingmarco.forge.MouseListener;
-import com.kingmarco.forge.Window;
 import com.kingmarco.observers.EventSystem;
 import com.kingmarco.observers.events.Event;
 import com.kingmarco.observers.events.EventType;
 import imgui.ImGui;
-import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
-import org.joml.Vector2f;
 
+/**
+ * A class responsible to create the menu bar, the buttons to save and load the level scene.
+ * */
 public class MenuBar {
 
+    /**
+     * Displays an ImGui window for settings, including the buttons to save and load the scene.
+     */
     public void imgui() {
 
         ImGui.begin("Settings", ImGuiWindowFlags.NoScrollbar |

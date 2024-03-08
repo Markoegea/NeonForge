@@ -3,25 +3,27 @@ package com.kingmarco.renderer;
 import com.kingmarco.components.SpriteRenderer;
 import com.kingmarco.forge.GameObject;
 import com.kingmarco.forge.Window;
-import com.kingmarco.util.AssetPool;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+/**
+ * A class responsible to create a batch of sprites to be rendered at the specific zIndex.
+ * */
 public class RenderBatch implements Comparable<RenderBatch>{
     // Vertex
     // =======
     // Pos               Color                          tex coords    tex id
     //float, float,      float, float, float, float     float, float  float
+
     private final int POS_SIZE = 2;
     private final int COLOR_SIZE = 4;
     private final int TEX_COORDS_SIZE = 2;
@@ -64,6 +66,12 @@ public class RenderBatch implements Comparable<RenderBatch>{
         this.textures = new ArrayList<>();
     }
 
+    /**
+     * Initializes the rendering process.
+     *
+     * This method generates and binds a Vertex Array Object (VAO), allocates space for vertices,
+     * creates and uploads an indices buffer, and enables the buffer attribute pointers.
+     */
     public void start() {
         // Generate and bind a Vertex Array Object
         vaoID = glGenVertexArrays();
@@ -97,6 +105,15 @@ public class RenderBatch implements Comparable<RenderBatch>{
         glEnableVertexAttribArray(4);
     }
 
+    /**
+     * Adds a sprite to the render batch.
+     *
+     * This method sets the sprite as dirty, gets the index and adds the sprite to the render batch,
+     * checks if the sprite has a texture and if it's not already in the textures list, adds it,
+     * loads the sprite properties to the local vertices array, and checks if the number of sprites has reached the maximum batch size.
+     *
+     * @param spr The sprite to be added.
+     */
     public void addSprite(SpriteRenderer spr) {
         spr.setDirty(true);
 
@@ -120,6 +137,20 @@ public class RenderBatch implements Comparable<RenderBatch>{
         //reBufferData(true);
     }
 
+    /**
+     * Renders the batches.
+     *
+     * This method iterates over the sprites, checks if each sprite is dirty and if so,
+     * loads its properties to the local vertices array and sets it as not dirty,
+     * checks if the sprite's zIndex is different from the batch's zIndex and if so,
+     * destroys the sprite and adds it to the renderer, re-buffers the data if needed,
+     * uses the shader and uploads the projection and view matrices, binds the textures,
+     * uploads the texture slots, binds the VAO and enables the attribute pointers,
+     * draws the elements, disables the attribute pointers and unbinds the VAO,
+     * unbinds the textures, and detaches the shader.
+     *
+     * @param shader The shader to be used for rendering.
+     */
     public void render(Shader shader) {
         boolean reBufferData = false;
         for (int i=0; i < sprites.length; i++){
@@ -169,6 +200,13 @@ public class RenderBatch implements Comparable<RenderBatch>{
         shader.detach();
     }
 
+
+    /**
+     * Re-buffers the data if the reBufferData parameter is true.
+     * It binds the buffer to the vboID and then updates the buffer data with the vertices.
+     *
+     * @param reBufferData A boolean indicating whether to re-buffer the data.
+     */
     private void reBufferData(boolean reBufferData) {
         if (reBufferData){
             glBindBuffer(GL_ARRAY_BUFFER, vboID);
@@ -176,6 +214,13 @@ public class RenderBatch implements Comparable<RenderBatch>{
         }
     }
 
+    /**
+     * Loads the properties of the vertex at the given index.
+     * It retrieves the sprite at the index, calculates the offset, and loads various properties such as color,
+     * texture coordinates, texture id, and entity id.
+     *
+     * @param index The index of the vertex whose properties are to be loaded.
+     */
     private void loadVertexProperties(int index) {
         SpriteRenderer sprite = this.sprites[index];
 
@@ -250,6 +295,12 @@ public class RenderBatch implements Comparable<RenderBatch>{
         }
     }
 
+    /**
+     * Generates the indices for the sprites.
+     * It creates an array of elements and loads the element indices for each sprite.
+     *
+     * @return An array of integers representing the indices of the sprites.
+     */
     private int[] generateIndices() {
         // 6 indices per quad (3 per triangle)
         int[] elements = new int[6 * maxBatchSize];
@@ -260,6 +311,12 @@ public class RenderBatch implements Comparable<RenderBatch>{
         return elements;
     }
 
+    /**
+     * Loads the element indices for the given index into the elements array.
+     *
+     * @param elements The array of elements.
+     * @param index The index for which to load the element indices.
+     */
     private void loadElementIndices(int[] elements, int index){
         int offsetArrayIndex = 6 * index;
         int offset = 4 * index;
@@ -276,6 +333,12 @@ public class RenderBatch implements Comparable<RenderBatch>{
         elements[offsetArrayIndex + 5] = offset + 1;
     }
 
+    /**
+     * Destroys the GameObject if it exists.
+     *
+     * @param go The GameObject to destroy.
+     * @return A boolean indicating whether the GameObject was destroyed.
+     */
     public boolean destroyIfExists(GameObject go) {
         SpriteRenderer sprite = go.getComponent(SpriteRenderer.class);
         int spriteIndex = findSpriteIndex(sprite);
@@ -292,6 +355,12 @@ public class RenderBatch implements Comparable<RenderBatch>{
         return false;
     }
 
+    /**
+     * Finds the index of the given SpriteRenderer in the sprites array.
+     *
+     * @param sprite The SpriteRenderer to find.
+     * @return The index of the SpriteRenderer, or -1 if it is not found.
+     */
     private int findSpriteIndex(SpriteRenderer sprite) {
         for (int i = 0; i < numSprites; i++) {
             if (sprites[i] == sprite) {
@@ -301,6 +370,11 @@ public class RenderBatch implements Comparable<RenderBatch>{
         return -1;
     }
 
+    /**
+     * Shifts the sprites in the sprites array to the left starting from the given index.
+     *
+     * @param startIndex The index from which to start shifting.
+     */
     private void shiftSpritesLeft(int startIndex) {
         for (int i = startIndex; i < sprites.length; i++) {
             sprites[i] = sprites[i + 1];
@@ -309,23 +383,50 @@ public class RenderBatch implements Comparable<RenderBatch>{
         }
     }
 
-
+    /**
+     * Checks if the RenderBatch has room for more sprites.
+     *
+     * @return A boolean indicating whether the RenderBatch has room.
+     */
     public boolean hasRoom() {
         return this.hasRoom;
     }
 
+    /**
+     * Checks if the RenderBatch has room for more textures.
+     *
+     * @return A boolean indicating whether the RenderBatch has texture room.
+     */
     public boolean hasTextureRoom() {
         return this.textures.size() < 8;
     }
 
+    /**
+     * Checks if the RenderBatch contains the given texture.
+     *
+     * @param tex The texture to check.
+     * @return A boolean indicating whether the RenderBatch contains the texture.
+     */
     public boolean hasTexture(Texture tex) {
         return this.textures.contains(tex);
     }
 
+    /**
+     * Gets the z-index of the RenderBatch.
+     *
+     * @return The z-index of the RenderBatch.
+     */
     public int getzIndex() {
         return this.zIndex;
     }
 
+    /**
+     * Compares this RenderBatch with another based on their z-indices.
+     *
+     * @param o The other RenderBatch to compare with.
+     * @return A negative integer, zero, or a positive integer as this RenderBatch's z-index is less than,
+     * equal to, or greater than the specified RenderBatch's z-index.
+     */
     @Override
     public int compareTo(RenderBatch o) {
         return Integer.compare(this.zIndex, o.getzIndex());

@@ -7,10 +7,16 @@ import imgui.flag.ImGuiTreeNodeFlags;
 
 import java.util.List;
 
+/**
+ * A class responsible to represents a scene hierarchy window for managing {@link GameObject}.
+ * */
 public class SceneHierarchyWindow {
 
     private static String payLoadDragDropType = "SceneHierarchy";
 
+    /**
+     * Displays the ImGui scene hierarchy window.
+     */
     public void imgui() {
         ImGui.begin("Scene Hierarchy");
 
@@ -32,6 +38,13 @@ public class SceneHierarchyWindow {
         ImGui.end();
     }
 
+    /**
+     * Creates a tree node for the specified GameObject.
+     *
+     * @param obj   The GameObject to display.
+     * @param index The index of the GameObject.
+     * @return True if the tree node is open, false otherwise.
+     */
     private boolean doTreeNode(GameObject obj, int index){
         ImGui.pushID(index);
         boolean treeNodeOpen = ImGui.treeNodeEx(

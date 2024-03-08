@@ -7,7 +7,19 @@ import com.kingmarco.components.Transform;
 
 import java.lang.reflect.Type;
 
+/**
+ * A class responsible to deserializer for GameObjects
+ * */
 public class GameObjectDeserializer implements JsonDeserializer<GameObject> {
+    /**
+     * Deserializes a JSON element into a GameObject.
+     *
+     * @param json       The JSON element to deserialize.
+     * @param typeOfT    The type of the GameObject.
+     * @param context    The deserialization context.
+     * @return The deserialized GameObject.
+     * @throws JsonParseException If an error occurs during deserialization.
+     */
     @Override
     public GameObject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();

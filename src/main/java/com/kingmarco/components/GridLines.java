@@ -9,16 +9,27 @@ import com.kingmarco.util.Settings;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+/**
+ * Class responsible to create the grid lines in the editor mode
+ * */
 public class GridLines extends Component{
 
     private final DrawLines drawLines = new DrawLines(1);
 
+    /**
+     * Initialize the grid lines and add them to be rendered
+     * */
     @Override
     public void start() {
         drawLines.start();
         DebugDraw.addDrawLines(drawLines);
     }
 
+    /**
+     * Update the lines width, height and number, based in the editor camera
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     * */
     @Override
     public void editorUpdate(float dt) {
         Camera camera = Window.getScene().camera();

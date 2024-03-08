@@ -4,11 +4,19 @@ import com.kingmarco.editor.PropertiesWindow;
 import com.kingmarco.forge.MouseListener;
 import org.joml.Vector2f;
 
+/**
+ * Class responsible for create the gizmo that scale the game object
+ * */
 public class ScaleGizmo extends Gizmo {
     public ScaleGizmo(Sprite scalesSprite, PropertiesWindow propertiesWindow){
         super(scalesSprite, propertiesWindow);
     }
 
+    /**
+     * Update the game object scale depends on the mouse position
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     * */
     @Override
     public void editorUpdate(float dt) {
         if (deactivate) return;

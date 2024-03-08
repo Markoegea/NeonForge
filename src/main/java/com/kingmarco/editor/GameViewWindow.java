@@ -10,11 +10,18 @@ import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
 import org.joml.Vector2f;
 
+/**
+ * A class responsible to create and render the game view in the ImGui UI.
+ * */
 public class GameViewWindow {
 
     private boolean isPlaying = false;
     private boolean windowIsHovered;
 
+    /**
+     * Set the ImGui items such as the play and stop buttons and the game view.
+     * And set the game view position, size and distance to the {@link MouseListener} class.
+     * */
     public void imgui() {
         ImGui.begin("Game Viewport", ImGuiWindowFlags.NoScrollbar |
                 ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.MenuBar);
@@ -48,10 +55,20 @@ public class GameViewWindow {
         ImGui.end();
     }
 
+    /**
+     * Determines whether ImGui wants to capture the mouse.
+     *
+     * @return True if ImGui wants to capture the mouse, false otherwise.
+     */
     public boolean getWantCaptureMouse(){
         return windowIsHovered;
     }
 
+    /**
+     * Calculates the largest available size for the viewport.
+     *
+     * @return The largest available size as an {@link ImVec2}.
+     */
     private ImVec2 getLargestSizeForViewport() {
         ImVec2 windowSize = new ImVec2();
         ImGui.getContentRegionAvail(windowSize);
@@ -59,6 +76,12 @@ public class GameViewWindow {
         return new ImVec2(windowSize.x, windowSize.y);
     }
 
+    /**
+     * Calculates the centered position for the viewport based on the specified aspect size.
+     *
+     * @param aspectSize The size of the aspect to center.
+     * @return The centered position as an {@link ImVec2}.
+     */
     private ImVec2 getCenteredPositionForViewport(ImVec2 aspectSize) {
         ImVec2 windowSize = new ImVec2();
         ImGui.getContentRegionAvail(windowSize);

@@ -20,6 +20,13 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 
+
+/**
+
+ A class responsible to manages the ImGui user interface for the editor,
+ initializing ImGui, updating ImGui windows, handling input events,
+ rendering ImGui, and cleaning up resources.
+ */
 public class ImGuiLayer {
     private long glfwWindow; // pointer to the current GLFW window
 
@@ -43,7 +50,9 @@ public class ImGuiLayer {
         return this.gameViewWindow;
     }
 
-    // Initialize Dear ImGui.
+    /**
+     * Initializes Dear ImGui, their components, callbacks, clipboard and fonts.
+     */
     public void initImGui() {
         // IMPORTANT!!
         // This line is critical for Dear ImGui to work.
@@ -160,6 +169,11 @@ public class ImGuiLayer {
         imGuiGl3.init("#version 330 core");
     }
 
+    /**
+     * Updates the ImGuiLayer and display UI elements with the given delta time and current scene.
+     * @param dt The time elapsed since the last update.
+     * @param currentScene The current scene.
+     */
     public void update(float dt, Scene currentScene){
        startFrame(dt);
 
@@ -175,11 +189,17 @@ public class ImGuiLayer {
         endFrame();
     }
 
+    /**
+     * Called at the beginning of each frame.
+     * */
     private void startFrame(final float deltaTime) {
         imGuiImplGlfw.newFrame();
         ImGui.newFrame();
     }
 
+    /**
+     * Called at the end to each frame to render the image.
+     * */
     private void endFrame() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glViewport(0, 0, Window.getFinalWidth(), Window.getFinalHeight());
@@ -196,12 +216,20 @@ public class ImGuiLayer {
         glfwMakeContextCurrent(backupWindowPtr);
     }
 
-    // If you want to clean a room after yourself - do it by yourself
+    /**
+     * Cleans up resources used by ImGui.
+     * This method should be called when ImGui functionality is no longer needed.
+     * */
     private void destroyImGui() {
         imGuiGl3.dispose();
         ImGui.destroyContext();
     }
 
+
+
+    /**
+     * Sets up the dockspace for ImGui windows.
+     */
     private void setupDockspace(){
         int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking ;
 
@@ -225,6 +253,10 @@ public class ImGuiLayer {
         ImGui.end();
     }
 
+    /**
+    * Retrieves the PropertiesWindow associated with this ImGuiLayer.
+    * @return The PropertiesWindow.
+    */
     public PropertiesWindow getPropertiesWindow() {
         return this.propertiesWindow;
     }

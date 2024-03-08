@@ -2,8 +2,20 @@ package com.kingmarco.renderer;
 
 import org.joml.Vector2f;
 
+/**
+ * The MathForms class provides mathematical operations for game development.
+ */
 public class MathForms {
 
+    /**
+     * Rotates a point around a center by a specified angle.
+     *
+     * This method converts the angle from degrees to radians, calculates the sine and cosine of the angle, translates the point to the origin (center of rotation), calculates the rotated coordinates, and updates the point with the rotated coordinates.
+     *
+     * @param vert The point to be rotated.
+     * @param angleDeg The angle of rotation in degrees.
+     * @param center The center of rotation.
+     */
     public static void rotate(Vector2f vert, float angleDeg, Vector2f center) {
         float angle = (float) Math.toRadians(angleDeg);
 

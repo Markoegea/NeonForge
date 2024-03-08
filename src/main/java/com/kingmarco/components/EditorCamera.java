@@ -7,6 +7,9 @@ import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * Class used to control the editor camera
+ * */
 public class EditorCamera extends Component{
 
     private float dragDebounce = 0.032f;
@@ -17,11 +20,21 @@ public class EditorCamera extends Component{
     private float dragSensitivity = 9.5f;
     private float scrollSensitivity = 0.1f;
 
+    /**
+     * Constructor for Editor with specified camera object.
+     *
+     * @param levelEditorCamera The camera object to use.
+     */
     public EditorCamera(Camera levelEditorCamera){
         this.levelEditorCamera = levelEditorCamera;
         this.clickOrigin = new Vector2f();
     }
 
+    /**
+     * Updates the editor camera based on the mouse and keyboard events.
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     */
     @Override
     public void editorUpdate(float dt) {
         if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_MIDDLE) && dragDebounce > 0){

@@ -9,17 +9,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class responsible to control the {@link AnimationState} and change between them.
+ * */
 public class StateMachine extends Component{
+
+    /**
+     * Class responsible to storage the stage name and trigger
+     * */
     private class StateTrigger {
         public String state;
         public String trigger;
 
         public StateTrigger() {}
+
         public StateTrigger(String state, String trigger){
             this.state = state;
             this.trigger = trigger;
         }
 
+        /**
+         * Checks if this {@link StateTrigger} is equal to another object.
+         *
+         * @param obj The object to compare with.
+         * @return True if the objects are equal, false otherwise.
+         */
         @Override
         public boolean equals(Object obj) {
             if (obj.getClass() != StateTrigger.class) return false;
@@ -27,6 +41,11 @@ public class StateMachine extends Component{
             return t2.trigger.equals(this.trigger) && t2.state.equals(this.state);
         }
 
+        /**
+         * Computes the hash code for this StateTrigger.
+         *
+         * @return The hash code.
+         */
         @Override
         public int hashCode() {
             return Objects.hash(trigger, state);
@@ -38,20 +57,41 @@ public class StateMachine extends Component{
     private transient AnimationState currentState = null;
     private String defaultStateTitle = "";
 
+    /**
+     * Refresh the {@link AnimationState} textures
+     * */
     public void refreshTextures() {
         for (AnimationState state : states) {
             state.refreshTextures();
         }
     }
 
+    /**
+     * Add a {@link StateTrigger} object as the key and the value is the name to another {@link AnimationState}
+     *
+     * @param from name of the initial animation.
+     * @param to name of the final animation.
+     * @param onTrigger name of the trigger.
+     * */
     public void addStateTrigger(String from, String to, String onTrigger){
         this.stateTransfers.put(new StateTrigger(from, onTrigger), to);
     }
 
+    /**
+     * Add a {@link AnimationState} to the list of available {@link AnimationState} states
+     *
+     * @param state {@link AnimationState} object to add.
+     * */
     public void addState(AnimationState state){
         this.states.add(state);
     }
 
+
+    /**
+     * Sets the default state title for the animation.
+     *
+     * @param animationTitle The title of the state to set as default.
+     */
     public void setDefaultStateTitle(String animationTitle) {
         for (AnimationState state : states){
             if (state.title.equals(animationTitle)){
@@ -65,6 +105,12 @@ public class StateMachine extends Component{
         System.out.println("Unable to find state '" + animationTitle + "' in set default state");
     }
 
+
+    /**
+     * Triggers a state transition based on the specified trigger.
+     *
+     * @param trigger The trigger to activate the state transition.
+     */
     public void trigger(String trigger) {
         for (StateTrigger state : stateTransfers.keySet()) {
             if (state.state.equals(currentState.title) && state.trigger.equals(trigger)){
@@ -88,6 +134,9 @@ public class StateMachine extends Component{
        System.out.println("Unable to find trigger" + trigger + "'");
     }
 
+    /**
+     * Set the current state animation name.
+     */
     @Override
     public void start() {
         for (AnimationState state : states) {
@@ -98,6 +147,11 @@ public class StateMachine extends Component{
         }
     }
 
+    /**
+     * Update the currentState frame and set it to the game object.
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     */
     @Override
     public void update(float dt) {
         if (currentState != null) {
@@ -109,6 +163,11 @@ public class StateMachine extends Component{
         }
     }
 
+    /**
+     * Update the currentState frame and set it to the game object in editor mode.
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     */
     @Override
     public void editorUpdate(float dt) {
         if (currentState != null) {
@@ -120,6 +179,9 @@ public class StateMachine extends Component{
         }
     }
 
+    /**
+     * Display in the ImGui the {@link AnimationState} settings to change them.
+     * */
     @Override
     public void imgui() {
         int index = 0;

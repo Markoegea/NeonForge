@@ -20,6 +20,9 @@ import java.util.Set;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
+/**
+ * Class responsible for the mouse shortcuts that control the selected game objects.
+ * */
 public class MouseControls extends Component {
     GameObject holdingObject = null;
     private float debounceTime = 0.05f;
@@ -35,6 +38,10 @@ public class MouseControls extends Component {
         DebugDraw.addDrawLines(drawLines);
     }
 
+    /**
+     * Pick up a game object to place it in the scene
+     * @param go Game object that will be placed in the scene
+     * */
     public void pickupObject(GameObject go) {
         if (this.holdingObject != null){
            this.holdingObject.destroy();
@@ -44,6 +51,9 @@ public class MouseControls extends Component {
         Window.getScene().addGameObjectToScene(go);
     }
 
+    /**
+     * Place the game object in the scene
+     * */
     public void place() {
         GameObject newObj = this.holdingObject.copy();
         newObj.getComponent(SpriteRenderer.class).setColor(new Vector4f(1, 1, 1, 1));
@@ -53,6 +63,11 @@ public class MouseControls extends Component {
         Window.getScene().addGameObjectToScene(newObj);
     }
 
+    /**
+     * Get the selected game object, change their setting and place in the scene based in the mouse listener
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     * */
     @Override
     public void editorUpdate(float dt) {
         debounce -= dt;
@@ -143,6 +158,11 @@ public class MouseControls extends Component {
         }
     }
 
+    /**
+     * Check if in the square grid is a game object with a sprite renderer
+     *
+     * @return true if there is a game object in a square grid or false if there is none
+     * */
     private boolean blockInSquare(float x, float y) {
         PropertiesWindow propertiesWindow = Window.getImGuiLayer().getPropertiesWindow();
         Vector2f start = new Vector2f(x, y);

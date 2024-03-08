@@ -4,6 +4,10 @@ import com.kingmarco.components.*;
 import com.kingmarco.forge.GameObject;
 import com.kingmarco.util.AssetPool;
 
+/**
+ * This class initializes the level game scene.
+ * It extends the SceneInitializer class.
+ */
 public class LevelGameSceneInitializer extends SceneInitializer {
     private GameObject levelGameStuff;
 
@@ -11,6 +15,12 @@ public class LevelGameSceneInitializer extends SceneInitializer {
 
     }
 
+    /**
+     * Initializes the given scene with the necessary components for the level game.
+     * It creates the level game object, adds the necessary components to it, starts it, and adds it to the scene.
+     *
+     * @param scene The scene to initialize.
+     */
     @Override
     public void init(Scene scene) {
         levelGameStuff = scene.createGameObject("LevelGame");
@@ -19,6 +29,12 @@ public class LevelGameSceneInitializer extends SceneInitializer {
         scene.addGameObjectToScene(levelGameStuff);
     }
 
+    /**
+     * Loads the resources needed for the scene.
+     * It loads shaders, textures, sprite sheets, and sounds from the asset pool, and refreshes the textures of the game objects in the scene.
+     *
+     * @param scene The scene for which to load resources.
+     */
     @Override
     public void loadResources(Scene scene) {
         AssetPool.getShader("assets/shaders/default.glsl");
@@ -74,10 +90,18 @@ public class LevelGameSceneInitializer extends SceneInitializer {
         }
     }
 
+    /**
+     * This method is called when the scene starts.
+     * Currently, it does not perform any actions.
+     */
     public void start() {
 
     }
 
+    /**
+     * This method is used for ImGui rendering.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void imgui() {
 

@@ -16,6 +16,10 @@ import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_filename;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.libc.LibCStdlib.free;
 
+/**
+ *  A class that storage the sounds to be played in the editor and game,
+ *  and create the channels to play the sound in the audio devices.
+ * */
 public class Sound implements Observer {
     private int bufferId;
     private int sourceId;
@@ -31,6 +35,17 @@ public class Sound implements Observer {
         init();
     }
 
+    /**
+     * Initializes the audio system, allocates space to store the return information from stb.
+     * Decodes the audio file using stb_vorbis_decode_filename.
+     * Retrieves the number of channels and the sample rate from the decoded audio data.
+     * Determines the correct OpenAL format based on the number of channels.
+     * Generates a buffer and a source in OpenAL, and assigns the decoded audio data to the buffer.
+     * Sets various properties on the source, such as whether it should loop and its gain.
+     * Frees the memory allocated for the raw audio data.
+     *
+     * @throws RuntimeException if the audio file could not be loaded.
+     */
     private void init(){
         //Allocate space to store the return information from stb
         stackPush();
@@ -78,17 +93,26 @@ public class Sound implements Observer {
         free(rawAudioBuffer);
     }
 
+    /**
+     * Stop the audio and change the audio source
+     * */
     public void changeSource(){
         stop();
         delete();
         init();
     }
 
+    /**
+     * Delete the audio and release it from the memory
+     * */
     public void delete() {
         alDeleteSources(sourceId);
         alDeleteBuffers(bufferId);
     }
 
+    /**
+     * Play the audio
+     * */
     public void play() {
         int state = alGetSourcei(sourceId, AL_SOURCE_STATE);
         if (state == AL_STOPPED){
@@ -102,6 +126,9 @@ public class Sound implements Observer {
         }
     }
 
+    /**
+     * Stop the audio
+     * */
     public void stop() {
         if (isPlaying) {
             alSourceStop(sourceId);
@@ -109,10 +136,23 @@ public class Sound implements Observer {
         }
     }
 
+    /**
+     * Returns the file path of the audio file.
+     *
+     * @return The file path of the audio file.
+     */
     public String getFilepath() {
         return this.filepath;
     }
 
+    /**
+     * Checks if the audio is currently playing.
+     *
+     * This method checks the state of the source in OpenAL. If the state is AL_STOPPED,
+     * it sets the isPlaying flag to false.
+     *
+     * @return True if the audio is playing, false otherwise.
+     */
     public boolean isPlaying() {
         int state = alGetSourcei(sourceId, AL_SOURCE_STATE);
         if (state == AL_STOPPED) {
@@ -121,6 +161,15 @@ public class Sound implements Observer {
         return isPlaying;
     }
 
+    /**
+     * Handles notifications from game objects.
+     *
+     * This method is called when a game object sends a notification. If the event type
+     * is AudioDeviceChanged, it calls the changeSource method to update the audio source.
+     *
+     * @param object The game object that sent the notification.
+     * @param event The event that triggered the notification.
+     */
     @Override
     public void onNotify(GameObject object, Event event) {
         if (event.type == EventType.AudioDeviceChanged) {

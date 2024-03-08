@@ -6,6 +6,9 @@ import com.kingmarco.forge.GameObject;
 import com.kingmarco.forge.Window;
 import org.joml.Vector4f;
 
+/**
+ * Class used to control the game camera
+ * */
 public class GameCamera extends Component{
     private transient GameObject player;
     private transient Camera gameCamera;
@@ -21,6 +24,10 @@ public class GameCamera extends Component{
         this.gameCamera = gameCamera;
     }
 
+    /**
+     * Initializes the level editor state.
+     * Sets up the camera, background color, and other necessary variables.
+     */
     @Override
     public void start() {
         this.player = Window.getScene().getGameObjectWith(PlayerController.class);
@@ -29,6 +36,11 @@ public class GameCamera extends Component{
                 this.gameCamera.getProjectionSize().y - this.cameraBuffer;
     }
 
+    /**
+     * Updates the level editor state based on user input.
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     */
     @Override
     public void update(float dt) {
         if (player == null){

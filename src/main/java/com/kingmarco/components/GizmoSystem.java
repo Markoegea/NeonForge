@@ -6,6 +6,9 @@ import com.kingmarco.forge.Window;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
+/**
+ * Class responsible for create the gizmo elements and manage them
+ * */
 public class GizmoSystem extends Component {
 
     private SpritesSheet gizmos;
@@ -15,6 +18,9 @@ public class GizmoSystem extends Component {
         this.gizmos = gizmos;
     }
 
+    /**
+     * Initialize the gizmos components and add them to the editor
+     * */
     @Override
     public void start() {
         gameObject.addComponent(new TranslateGizmo(Window.getImGuiLayer().getPropertiesWindow()));
@@ -22,6 +28,11 @@ public class GizmoSystem extends Component {
                 Window.getImGuiLayer().getPropertiesWindow()));
     }
 
+    /**
+     * Change the visibility of the gizmos based in the keyboard listener
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     * */
     @Override
     public void editorUpdate(float dt) {
         if (usingGizmo == 0){

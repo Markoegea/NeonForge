@@ -8,6 +8,9 @@ import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
+/**
+ * Class responsible for create the gizmo tha translate the game object
+ * */
 public class TranslateGizmo extends Gizmo{
 
     private final DrawLines drawLines = new DrawLines(2);
@@ -18,12 +21,20 @@ public class TranslateGizmo extends Gizmo{
         super(propertiesWindow);
     }
 
+    /**
+     * Initialize the gizmo lines.
+     * */
     @Override
     public void start() {
         drawLines.start();
         DebugDraw.addDrawLines(drawLines);
     }
 
+    /**
+     * Update the game object position based in the mouse listener.
+     *
+     * @param dt The time elapsed since the last update (in seconds).
+     * */
     @Override
     public void editorUpdate(float dt) {
         if (deactivate) return;
@@ -44,12 +55,23 @@ public class TranslateGizmo extends Gizmo{
         }
     }
 
+    /**
+     * Draw the 2D box around the game object
+     *
+     * @param gameObjectPosition The {@link Vector2f} position of the {@link com.kingmarco.forge.GameObject}.
+     * @param gameObjectScale The {@link Vector2f} scale of the {@link com.kingmarco.forge.GameObject}.
+     * */
     private void drawLine(Vector2f gameObjectPosition, Vector2f gameObjectScale){
         drawLines.addBox2D(new Vector2f(gameObjectPosition.x, gameObjectPosition.y),
                 new Vector2f(gameObjectScale.x * constantScale,
                         gameObjectScale.y * constantScale), 0);
     }
 
+    /**
+     * Check if the mouse pointer is hover the selected {@link com.kingmarco.forge.GameObject}.
+     *
+     * @return True if the mouse is hover the {@link com.kingmarco.forge.GameObject}, False otherwise.
+     * */
     private boolean checkHoverState() {
         if (this.activeGameObject == null) return false;
         Vector2f mousePos = MouseListener.getWorld();
@@ -61,11 +83,17 @@ public class TranslateGizmo extends Gizmo{
                 mousePos.y <= (gameObjectPosition.y + gameObjectScale.y);
     }
 
+    /**
+     * Override the active method
+     * */
     @Override
     protected void setActive() {
 
     }
 
+    /**
+     * Override the inactive method
+     * */
     @Override
     protected void setInactive() {
 

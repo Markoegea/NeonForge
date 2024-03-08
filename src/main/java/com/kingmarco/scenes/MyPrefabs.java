@@ -8,7 +8,19 @@ import com.kingmarco.physics2d.components.RigidBody2D;
 import com.kingmarco.physics2d.enums.BodyType;
 import com.kingmarco.util.AssetPool;
 
+/**
+ * This class provides utility methods for generating game objects and prefabs.
+ */
 public class MyPrefabs {
+
+    /**
+     * Generates a game object with a sprite.
+     *
+     * @param sprite The sprite to be added to the game object.
+     * @param sizeX The x-size of the game object.
+     * @param sizeY The y-size of the game object.
+     * @return The generated game object.
+     */
     public static GameObject generateSpriteObject(Sprite sprite, float sizeX, float sizeY){
         GameObject block = Window.getScene().createGameObject("Sprite_Object_Gen");
         block.transform.scale.x = sizeX;
@@ -20,6 +32,13 @@ public class MyPrefabs {
         return block;
     }
 
+    /**
+     * Generates a prefab game object from a file.
+     * The prefab includes a sprite, animation state, state machine, colliders, and a player controller.
+     *
+     * @param file The file from which to generate the prefab.
+     * @return The generated prefab game object.
+     */
     public static GameObject generatePrefab(String file){
         SpritesSheet playerSprites = AssetPool.getSpriteSheet(file);
         GameObject prefab = generateSpriteObject(playerSprites.getSprite(0), 0.25f, 0.25f);

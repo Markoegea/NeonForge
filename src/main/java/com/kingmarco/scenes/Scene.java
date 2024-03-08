@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class represents a Scene in the game.
+ * It contains methods for initializing, updating, and managing game objects in the scene.
+ */
 public class Scene {
 
     private Renderer renderer;
@@ -47,16 +51,27 @@ public class Scene {
         this.isRunning = false;
     }
 
+    /**
+     * Returns the Physics2D object associated with the scene.
+     *
+     * @return The Physics2D object of the scene.
+     */
     public Physics2D getPhysics() {
         return this.physics2D;
     }
 
+    /**
+     * Initializes the scene by loading resources and initializing the scene with the SceneInitializer.
+     */
     public void init() {
         this.camera = new Camera(new Vector2f());
         this.sceneInitializer.loadResources(this);
         this.sceneInitializer.init(this);
     }
 
+    /**
+     * Awakes the scene by starting all game objects and adding them to the renderer and physics.
+     */
     public void awake() {
         for (int i =0; i < gameObjects.size(); i++){
             GameObject go = gameObjects.get(i);
@@ -67,6 +82,12 @@ public class Scene {
         isRunning = true;
     }
 
+    /**
+     * Creates a new GameObject with the given name and adds a Transform component to it.
+     *
+     * @param name The name of the GameObject to create.
+     * @return The created GameObject.
+     */
     public GameObject createGameObject(String name) {
         GameObject go = new GameObject(name);
         go.addComponent((new Transform()));
@@ -74,6 +95,11 @@ public class Scene {
         return go;
     }
 
+    /**
+     * Adds a GameObject to the scene.
+     *
+     * @param go The GameObject to add to the scene.
+     */
     public void addGameObjectToScene(GameObject go){
         if (!isRunning){
             gameObjects.add(go);
@@ -82,6 +108,9 @@ public class Scene {
         }
     }
 
+    /**
+     * Destroys all game objects in the scene.
+     */
     public void destroy() {
         for (int i =0; i < gameObjects.size(); i++){
             GameObject go = gameObjects.get(i);
@@ -89,6 +118,12 @@ public class Scene {
         }
     }
 
+    /**
+     * Returns the first GameObject in the scene that has a component of the given class.
+     *
+     * @param clazz The class of the component to look for.
+     * @return The GameObject with the component, or null if no such GameObject is found.
+     */
     public <T extends Component> GameObject getGameObjectWith(Class<T> clazz){
         for (GameObject go : gameObjects){
             if (go.getComponent(clazz) != null) {
@@ -99,10 +134,21 @@ public class Scene {
         return null;
     }
 
+    /**
+     * Returns a list of all game objects in the scene.
+     *
+     * @return A list of all game objects in the scene.
+     */
     public List<GameObject> getGameObjects() {
         return gameObjects;
     }
 
+    /**
+     * Returns the GameObject with the given ID.
+     *
+     * @param gameObjectId The ID of the GameObject to return.
+     * @return The GameObject with the given ID, or null if no such GameObject is found.
+     */
     public GameObject getGameObject(int gameObjectId) {
         Optional<GameObject> result = this.gameObjects.stream()
                 .filter(gameObject -> gameObject.getUid() == gameObjectId)
@@ -110,6 +156,12 @@ public class Scene {
         return result.orElse(null);
     }
 
+    /**
+     * Returns the GameObject with the given name.
+     *
+     * @param gameObjectName The name of the GameObject to return.
+     * @return The GameObject with the given name, or null if no such GameObject is found.
+     */
     public GameObject getGameObject(String gameObjectName) {
         Optional<GameObject> result = this.gameObjects.stream()
                 .filter(gameObject -> gameObject.getName().equals(gameObjectName))
@@ -117,6 +169,11 @@ public class Scene {
         return result.orElse(null);
     }
 
+    /**
+     * Removes a GameObject from the scene.
+     *
+     * @param gameObject The GameObject to remove from the scene.
+     */
     public void removeGameObjectOfScene(GameObject gameObject){
         for(GameObject go: gameObjects){
             if (go.getUid() == gameObject.getUid()){
@@ -126,9 +183,18 @@ public class Scene {
         }
     }
 
+    /**
+     * This method is called when the scene starts.
+     * Currently, it does not perform any actions.
+     */
     public void start() {
     }
 
+    /**
+     * Updates the scene in the editor.
+     *
+     * @param dt The time since the last frame.
+     */
     public void editorUpdate(float dt){
         this.camera.adjustProjection();
         //System.out.println("FPS: " + (1.0f / dt));
@@ -154,6 +220,11 @@ public class Scene {
         pendingObject.clear();
     }
 
+    /**
+     * Updates the scene.
+     *
+     * @param dt The time since the last frame.
+     */
     public void update(float dt){
         this.camera.adjustProjection();
         this.physics2D.update(dt);
@@ -193,18 +264,34 @@ public class Scene {
         }
         pendingObject.clear();
     }
+
+    /**
+     * Renders the scene using the renderer.
+     */
     public void render(){
         this.renderer.render();
     }
 
+    /**
+     * Returns the camera of the scene.
+     *
+     * @return The camera of the scene.
+     */
     public Camera camera(){
         return this.camera;
     }
 
+    /**
+     * Handles ImGui rendering by delegating to the SceneInitializer.
+     */
     public void imgui(){
         this.sceneInitializer.imgui();
     }
 
+    /**
+     * Saves the scene to a file.
+     * It serializes all game objects in the scene that should be serialized and writes them to the save file.
+     */
     public void save() {
         Path path = Paths.get(savePath);
         Path parentDir = path.getParent();
@@ -230,6 +317,10 @@ public class Scene {
         }
     }
 
+    /**
+     * Loads the scene from a file.
+     * It reads the save file, deserializes the game objects, and adds them to the scene.
+     */
     public void load() {
         String inFile = "";
         try {
