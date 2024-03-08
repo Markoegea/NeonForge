@@ -16,6 +16,7 @@ public class TranslateGizmo extends Gizmo{
     private final DrawLines drawLines = new DrawLines(2);
     private boolean hover = false;
     private float constantScale = 1.1f;
+    private Vector2f delta = new Vector2f(0, 0);
 
     public TranslateGizmo(PropertiesWindow propertiesWindow){
         super(propertiesWindow);
@@ -42,9 +43,12 @@ public class TranslateGizmo extends Gizmo{
         if (activeGameObject != null) {
             if (hover && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
                 Vector2f delta = MouseListener.screenToWorld(MouseListener.getScreenD());
-                activeGameObject.transform.position.x -= delta.x;
-                activeGameObject.transform.position.y -= -delta.y;
+                activeGameObject.transform.position.x -= delta.x - this.delta.x;
+                activeGameObject.transform.position.y -= -(delta.y - this.delta.y);
+            } else {
+                delta = MouseListener.screenToWorld(MouseListener.getScreenD());
             }
+
             drawLine(activeGameObject.transform.position, activeGameObject.transform.scale);
         }
 

@@ -247,10 +247,10 @@ public class Shader {
     }
 
     /**
-     * Uploads a texture to the shader.
+     * Uploads a texture value to the shader.
      *
      * @param varName The name of the variable in the shader.
-     * @param slot The slot of the texture to upload.
+     * @param slot The texture object to upload.
      */
     public void uploadTexture(String varName, int slot){
         int varLocation = glGetUniformLocation(shaderProgramID, varName);
@@ -259,10 +259,10 @@ public class Shader {
     }
 
     /**
-     * Uploads an array of integers to the shader.
+     * Uploads an integer array to the shader.
      *
      * @param varName The name of the variable in the shader.
-     * @param array The array of integers to upload.
+     * @param array The integer array value to upload.
      */
     public void uploadIntArray(String varName, int[] array){
         int varLocation = glGetUniformLocation(shaderProgramID, varName);

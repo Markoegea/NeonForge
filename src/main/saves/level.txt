@@ -450,7 +450,7 @@
             "x": 1.0,
             "y": 1.0,
             "z": 1.0,
-            "w": 1.0
+            "w": 0.8
           },
           "sprite": {
             "width": 16.0,
@@ -537,8 +537,8 @@
         "type": "com.kingmarco.components.Transform",
         "properties": {
           "position": {
-            "x": 2.878125,
-            "y": 1.125
+            "x": 2.8249965,
+            "y": 1.1194464
           },
           "scale": {
             "x": 0.25,
@@ -553,9 +553,9 @@
         "type": "com.kingmarco.components.SpriteRenderer",
         "properties": {
           "color": {
-            "x": 0.8,
-            "y": 0.8,
-            "z": 0.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
             "w": 0.8
           },
           "sprite": {
@@ -629,7 +629,7 @@
     ]
   },
   {
-    "uid": 7,
+    "uid": 6,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -668,19 +668,19 @@
             "texCoords": [
               {
                 "x": 0.25,
-                "y": 0.75
+                "y": 0.5
               },
               {
                 "x": 0.25,
-                "y": 0.5
+                "y": 0.25
+              },
+              {
+                "x": 0.0,
+                "y": 0.25
               },
               {
                 "x": 0.0,
                 "y": 0.5
-              },
-              {
-                "x": 0.0,
-                "y": 0.75
               }
             ]
           },

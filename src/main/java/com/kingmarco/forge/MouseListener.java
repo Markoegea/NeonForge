@@ -204,12 +204,12 @@ public class MouseListener {
      * @return A {@link Vector2f} containing the screen coordinates (x, y)
      * */
     public static Vector2f getScreen() {
-        float mousePosX = (get().gameViewportDistance.x + (get().gameViewportPos.x / 2f)) - Window.getPosX();
+        float mousePosX = (get().gameViewportDistance.x + (get().gameViewportPos.x / 2f));
         float currentX = (getX() - mousePosX);
         currentX = (currentX / get().gameViewportSize.x) * Window.getFinalWidth();
 
-        float mousePosY = (get().gameViewportDistance.y + (get().gameViewportPos.y / 2f)) - Window.getPosY();
-        float currentY = (getY() - mousePosY);
+        float mousePosY = (get().gameViewportDistance.y + (get().gameViewportPos.y / 2f));
+        float currentY =  (getY() - mousePosY);
         currentY = Window.getFinalHeight() - ((currentY / get().gameViewportSize.y) * Window.getFinalHeight());
 
         return new Vector2f(currentX, currentY);
@@ -286,8 +286,8 @@ public class MouseListener {
      */
     public static Vector2f screenToWorld(Vector2f screenCoords){
         Vector2f normalizedScreenCords = new Vector2f(
-                screenCoords.x / Window.getFinalWidth(),
-                screenCoords.y / Window.getFinalHeight()
+                screenCoords.x / Window.getWidth(),
+                screenCoords.y / Window.getHeight()
         );
         normalizedScreenCords.mul(2.0f).sub(new Vector2f(1.0f, 1.0f));
         Camera camera = Window.getScene().camera();
