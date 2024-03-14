@@ -1,4 +1,4 @@
-package com.kingmarco.scenes;
+package com.kingmarco.GameFunctionality;
 
 import com.kingmarco.components.*;
 import com.kingmarco.forge.GameObject;

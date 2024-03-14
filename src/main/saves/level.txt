@@ -1,6 +1,6 @@
 [
   {
-    "uid": 0,
+    "uid": 54,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -106,7 +106,7 @@
     ]
   },
   {
-    "uid": 1,
+    "uid": 55,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -212,7 +212,7 @@
     ]
   },
   {
-    "uid": 2,
+    "uid": 56,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -318,7 +318,7 @@
     ]
   },
   {
-    "uid": 3,
+    "uid": 57,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -424,7 +424,7 @@
     ]
   },
   {
-    "uid": 4,
+    "uid": 58,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -530,7 +530,7 @@
     ]
   },
   {
-    "uid": 5,
+    "uid": 59,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -629,15 +629,15 @@
     ]
   },
   {
-    "uid": 6,
+    "uid": 60,
     "name": "Sprite_Object_Gen",
     "components": [
       {
         "type": "com.kingmarco.components.Transform",
         "properties": {
           "position": {
-            "x": 2.8625,
-            "y": 1.8805562
+            "x": 2.8796854,
+            "y": 3.3110662
           },
           "scale": {
             "x": 0.25,
@@ -668,19 +668,19 @@
             "texCoords": [
               {
                 "x": 0.25,
-                "y": 0.5
+                "y": 0.75
               },
               {
                 "x": 0.25,
-                "y": 0.25
-              },
-              {
-                "x": 0.0,
-                "y": 0.25
+                "y": 0.5
               },
               {
                 "x": 0.0,
                 "y": 0.5
+              },
+              {
+                "x": 0.0,
+                "y": 0.75
               }
             ]
           },

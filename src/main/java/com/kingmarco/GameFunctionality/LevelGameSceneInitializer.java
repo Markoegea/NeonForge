@@ -1,7 +1,9 @@
-package com.kingmarco.scenes;
+package com.kingmarco.GameFunctionality;
 
 import com.kingmarco.components.*;
 import com.kingmarco.forge.GameObject;
+import com.kingmarco.scenes.Scene;
+import com.kingmarco.scenes.SceneInitializer;
 import com.kingmarco.util.AssetPool;
 
 /**

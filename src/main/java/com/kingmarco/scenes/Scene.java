@@ -229,20 +229,6 @@ public class Scene {
         this.camera.adjustProjection();
         this.physics2D.update(dt);
         //System.out.println("FPS: " + (1.0f / dt));
-        /*float t = 0.0f;
-        float x = (Math.sin(t) * 200.0f) + 600;
-        float y = (Math.cos(t) * 200.0f) + 400;
-        float nx = (Math.sin(t) * (-200.0f)) + 600;
-        float ny = (Math.cos(t) * (-200.0f)) + 400;
-        t += 0.05f;
-        DebugDraw.addLine2D(new Vector2f(600, 400), new Vector2f(x, y), new Vector3f(1,0,0), 135);
-        DebugDraw.addLine2D(new Vector2f(600, 400), new Vector2f(nx, ny), new Vector3f(0,0,1), 30);
-        DebugDraw.addBox2D(new Vector2f(200, 200), new Vector2f(64, 32), angle, new Vector3f(0, 1, 0), 1);
-        angle += 50.0f * dt;
-
-        DebugDraw.addCircle(new Vector2f(x, y), 64, new Vector3f(0, 1, 0), 1);
-        x += 50f * dt;
-        y += 50f * dt;*/
 
         for (int i=0; i < gameObjects.size(); i++){
             GameObject go = gameObjects.get(i);

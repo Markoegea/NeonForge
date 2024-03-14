@@ -4,12 +4,9 @@ import com.kingmarco.observers.EventSystem;
 import com.kingmarco.observers.Observer;
 import com.kingmarco.observers.events.Event;
 import com.kingmarco.observers.events.EventType;
-import com.kingmarco.scenes.LevelEditorSceneInitializer;
-import com.kingmarco.scenes.LevelGameSceneInitializer;
 
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
-import java.util.Objects;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_filename;

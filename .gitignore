@@ -1,4 +1,4 @@
-.gradle
+../../../.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -42,4 +42,4 @@ bin/
 .DS_Store
 
 ### Personal Files ##
-src/main/saves
+/src/main/saves/

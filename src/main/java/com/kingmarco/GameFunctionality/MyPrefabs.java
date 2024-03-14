@@ -1,4 +1,4 @@
-package com.kingmarco.scenes;
+package com.kingmarco.GameFunctionality;
 
 import com.kingmarco.GameFunctionality.PlayerController;
 import com.kingmarco.components.*;

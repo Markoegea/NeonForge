@@ -1,4 +1,4 @@
-package com.kingmarco.scenes;
+package com.kingmarco.GameFunctionality;
 
 import com.kingmarco.components.*;
 import com.kingmarco.forge.GameObject;
@@ -7,6 +7,8 @@ import com.kingmarco.forge.Window;
 import com.kingmarco.physics2d.components.Box2DCollider;
 import com.kingmarco.physics2d.components.RigidBody2D;
 import com.kingmarco.physics2d.enums.BodyType;
+import com.kingmarco.scenes.Scene;
+import com.kingmarco.scenes.SceneInitializer;
 import com.kingmarco.util.AssetPool;
 import com.kingmarco.util.Settings;
 import imgui.ImGui;
